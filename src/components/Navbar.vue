@@ -1,25 +1,21 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link>
+  <nav v-if="!userStore.loadingSession">
+    <router-link to="/" v-if="userStore.userData">Home</router-link>
     |
-    <router-link to="/login">Login</router-link>
+    <router-link to="/login" v-if="!userStore.userData">Login</router-link>
     |
-    <router-link to="/register">Register</router-link>
+    <router-link to="/register" v-if="!userStore.userData">Register</router-link>
     |
-    <button>Logout</button>
+    <button @click="userStore.logoutUser">Logout</button>
   </nav>
+
+  <div v-else>loading user...</div>
 </template>
 
-<script lang="ts">
-  import { defineComponent } from 'vue';
+<script setup>
+  import { useUserStore } from '../stores/user.js';
 
-  export default defineComponent({
-    name: 'Navbar',
-
-    setup() {
-      return {};
-    },
-  });
+  const userStore = useUserStore();
 </script>
 
 <style scoped></style>

@@ -1,24 +1,11 @@
 <template>
-  <!--  TODO Change this!! -->
-  <!-- <Navbar /> -->
-
-  <nav>
-    <router-link to="/">Home</router-link>
-    |
-    <router-link to="/login">Login</router-link>
-    |
-    <router-link to="/register">Register</router-link>
-    |
-    <button @click="userStore.logoutUser">Logout</button>
-  </nav>
+  <Navbar />
 
   <router-view />
 </template>
 
 <script setup>
-  import { useUserStore } from './stores/user.js';
-
-  const userStore = useUserStore();
+  import Navbar from './components/Navbar.vue';
 </script>
 
 <style scoped></style>

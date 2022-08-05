@@ -5,14 +5,16 @@ import {
   signOut,
 } from 'firebase/auth';
 import { defineStore } from 'pinia';
-import router from '../router';
 
+import router from '../router';
 import { auth } from '../../firebaseConfig';
+import { useFireStoreDB } from './firestoreDB';
 
 export const useUserStore = defineStore('userStore', {
   state: () => ({
     userData: null,
     loadingUser: false,
+    loadingSession: false,
   }),
 
   actions: {
@@ -52,10 +54,14 @@ export const useUserStore = defineStore('userStore', {
     },
 
     async logoutUser() {
+      const fireStoreDB = useFireStoreDB();
+
       try {
         await signOut(auth);
 
         this.userData = null;
+
+        fireStoreDB.$reset();
 
         router.push({ name: 'register' });
       } catch (error) {
@@ -76,6 +82,9 @@ export const useUserStore = defineStore('userStore', {
               };
             } else {
               this.userData = null;
+
+              const fireStoreDB = useFireStoreDB();
+              fireStoreDB.$reset();
             }
 
             resolve(user);
