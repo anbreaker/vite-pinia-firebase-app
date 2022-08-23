@@ -9,6 +9,12 @@ const routes = [
     path: '/',
     component: () => import('../views/Home.vue'),
   },
+  {
+    name: 'edit',
+    beforeEnter: [isAuthenticatedGuard],
+    path: '/edit/:id',
+    component: () => import('../views/Edit.vue'),
+  },
   { name: 'login', path: '/login', component: () => import('../views/Login.vue') },
   { name: 'register', path: '/register', component: () => import('../views/Register.vue') },
 ];

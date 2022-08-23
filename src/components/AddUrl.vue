@@ -1,22 +1,29 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <input type="text" placeholder="Enter your URL" v-model="url" />
-    <button type="submit">Add</button>
+    <button type="submit">{{ nameButton }}</button>
   </form>
 </template>
 
 <script setup>
-  import { ref } from 'vue';
+  const props = defineProps({
+    nameButton: {
+      type: String,
+      required: true,
+    },
+    url: {
+      type: String,
+      default: '',
+    },
+  });
 
   import { useFireStoreDB } from '../stores/firestoreDB';
 
   const fireStoreDB = useFireStoreDB();
 
-  const url = ref('');
-
   const handleSubmit = () => {
     // TODO validations url
-    fireStoreDB.addUrl(url.value);
+    fireStoreDB.addUrl(props.url);
   };
 </script>
 
