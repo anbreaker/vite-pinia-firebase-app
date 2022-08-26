@@ -63,7 +63,7 @@ export const useUserStore = defineStore('userStore', {
 
         fireStoreDB.$reset();
 
-        router.push({ name: 'register' });
+        router.push({ name: 'login' });
       } catch (error) {
         console.log(error);
       }
