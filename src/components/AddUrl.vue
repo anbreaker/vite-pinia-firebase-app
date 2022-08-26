@@ -1,13 +1,13 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <input type="text" placeholder="Enter your URL" v-model="url" />
-    <button type="submit">{{ nameButton }}</button>
+    <button type="submit">{{ buttonText }}</button>
   </form>
 </template>
 
 <script setup>
   const props = defineProps({
-    nameButton: {
+    buttonText: {
       type: String,
       required: true,
     },

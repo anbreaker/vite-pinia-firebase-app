@@ -2,7 +2,7 @@
   <h1>Home</h1>
   <h3>{{ userStore.userData?.email }}</h3>
 
-  <AddUrl :nameButton="nameButton" />
+  <AddUrl :buttonText="'Add'" />
 
   <h4 v-if="fireStoreDB.loadingDocs">Loading docs...</h4>
   <ul v-else>
@@ -23,7 +23,6 @@
   import AddUrl from '../components/AddUrl.vue';
 
   const router = useRouter();
-  const nameButton = 'Add';
 
   const userStore = useUserStore();
   const fireStoreDB = useFireStoreDB();

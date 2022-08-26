@@ -1,9 +1,10 @@
 <template>
   <div>
     <h1>Edit</h1>
-
-    <AddUrl :nameButton="nameButton" :url="urlToEdit" />
-    {{ urlToEdit }} editar
+    <form @submit.prevent="handleSubmit">
+      <input type="text" placeholder="Enter your URL" v-model="urlToEdit" />
+      <button type="submit">Edit</button>
+    </form>
   </div>
 </template>
 
@@ -12,11 +13,10 @@
   import { useRoute } from 'vue-router';
 
   import { useFireStoreDB } from '../stores/firestoreDB';
-  import AddUrl from '../components/AddUrl.vue';
 
   const urlToEdit = ref('');
+
   const route = useRoute();
-  const nameButton = 'Edit';
 
   const fireStoreDB = useFireStoreDB();
 
@@ -24,8 +24,10 @@
     urlToEdit.value = await fireStoreDB.readUrl(route.params.id);
   });
 
-  // https://ibm-learning.udemy.com/course/curso-vue/learn/lecture/31484266#questions
-  // min 14.30
+  const handleSubmit = () => {
+    // TODO validations url
+    fireStoreDB.editUrl(route.params.id, urlToEdit.value);
+  };
 </script>
 
 <style lang="scss" scoped></style>

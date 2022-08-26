@@ -7,11 +7,13 @@ import {
   getDoc,
   getDocs,
   query,
+  updateDoc,
   where,
 } from 'firebase/firestore/lite';
+import { nanoid } from 'nanoid';
 
 import { auth, db } from '../../firebaseConfig';
-import { nanoid } from 'nanoid';
+import router from '../router';
 
 export const useFireStoreDB = defineStore('fireStoreDB', {
   state: () => ({
@@ -81,7 +83,27 @@ export const useFireStoreDB = defineStore('fireStoreDB', {
       }
     },
 
-    async editUrl(id) {},
+    async editUrl(id, name) {
+      try {
+        const docRef = doc(db, 'urls', id);
+
+        const docSnap = await getDoc(docRef);
+
+        await this.checkUserAuth(docSnap);
+
+        await updateDoc(docRef, {
+          name: name,
+        });
+
+        this.documents = this.documents.map((item) => (item.id === id ? { ...item, name } : item));
+
+        router.push({ name: 'home' });
+      } catch (error) {
+        console.log(error.message);
+      } finally {
+        this.loadingDocs = false;
+      }
+    },
 
     async deleteUrl(id) {
       try {
