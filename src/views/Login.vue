@@ -1,24 +1,39 @@
 <template>
   <a-row>
-    <a-col :xs="{ span: 24 }" :sm="{ span: 12, offset: 6 }">
+    <a-col :xs="{ span: 24 }" :sm="{ span: 18, offset: 3 }" :lg="{ span: 12, offset: 6 }">
       <h1>Login</h1>
 
       <a-form
         layout="vertical"
         name="basic-login"
-        @submit.prevent="handleSubmit"
         :model="formState"
+        @finish="onFinish"
+        @finishFailed="onFinishFailed"
       >
         <a-form-item
           name="email"
-          :rules="[{ required: true, message: 'Please input your email!' }]"
+          :rules="[
+            {
+              required: true,
+              whitespace: true,
+              message: 'Please, input a correct email',
+              type: 'email',
+            },
+          ]"
         >
           <a-input type="email" v-model:value="formState.email" />
         </a-form-item>
 
         <a-form-item
           name="password"
-          :rules="[{ required: true, message: 'Please input your password!' }]"
+          :rules="[
+            {
+              required: true,
+              min: 6,
+              whitespace: true,
+              message: 'Please input your password with min 6 Characters!',
+            },
+          ]"
         >
           <a-input-password placeholder="Enter Password" v-model:value="formState.password" />
         </a-form-item>
@@ -40,20 +55,17 @@
 
   const userStore = useUserStore();
 
-  // const email = ref('test@test.com');
-  // const password = ref('testtest');
-
-  // TODO video 126 min 20 https://ibm-learning.udemy.com/course/curso-vue/learn/lecture/31568300#questions
   const formState = reactive({
     email: 'test@test.com',
     password: 'testtest',
   });
 
-  const handleSubmit = async () => {
-    // if (!email.value || password.value.length < 6) return alert('Fields required');
-
-    // await userStore.loginUser(email.value, password.value);
+  const onFinish = async () => {
     await userStore.loginUser(formState.email, formState.password);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
   };
 </script>
 
