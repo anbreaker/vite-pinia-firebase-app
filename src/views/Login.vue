@@ -50,6 +50,7 @@
 
 <script setup>
   import { reactive } from 'vue';
+  import { message } from 'ant-design-vue';
 
   import { useUserStore } from '../stores/user.js';
 
@@ -61,7 +62,22 @@
   });
 
   const onFinish = async () => {
-    await userStore.loginUser(formState.email, formState.password);
+    const response = await userStore.loginUser(formState.email, formState.password);
+
+    if (!response) return message.success('Welcome User!');
+
+    switch (response) {
+      case 'auth/user-not-found':
+        message.error('auth/user-not-found');
+        break;
+      case 'auth/wrong-password':
+        message.error('auth/wrong-password');
+        break;
+
+      default:
+        message.warning("Firebase's Error, repeat again");
+        break;
+    }
   };
 
   const onFinishFailed = (errorInfo) => {

@@ -28,7 +28,9 @@ export const useUserStore = defineStore('userStore', {
           uid: user.uid,
         };
       } catch (error) {
-        console.log(error);
+        console.error(error.code);
+
+        return error.code;
       } finally {
         this.loadingUser = false;
       }
@@ -47,7 +49,9 @@ export const useUserStore = defineStore('userStore', {
 
         router.push({ name: 'home' });
       } catch (error) {
-        console.log(error);
+        console.error(error.code);
+
+        return error.code;
       } finally {
         this.loadingUser = false;
       }
@@ -65,7 +69,9 @@ export const useUserStore = defineStore('userStore', {
 
         router.push({ name: 'login' });
       } catch (error) {
-        console.log(error);
+        console.error(error.code);
+
+        return error.code;
       }
     },
 

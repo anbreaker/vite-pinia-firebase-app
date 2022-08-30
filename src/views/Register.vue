@@ -42,7 +42,7 @@
         </a-form-item>
 
         <a-form-item>
-          <a-button type="submit" :disabled="userStore.loadingUser">Create User</a-button>
+          <a-button type="primary" html-type="submit">Create User</a-button>
         </a-form-item>
       </a-form>
     </a-col>
@@ -52,6 +52,7 @@
 <script setup>
   import { reactive } from 'vue';
   import { useRouter } from 'vue-router';
+  import { message } from 'ant-design-vue';
 
   import { useUserStore } from '../stores/user.js';
 
@@ -65,7 +66,6 @@
   });
 
   const validatePass = async (_rule, value) => {
-    console.log('aqui', { value });
     if (value === '') {
       return Promise.reject('Please repeat your password');
     }
@@ -78,10 +78,22 @@
   };
 
   const onFinish = async (values) => {
-    console.log('Success:', values);
-    await userStore.registerUser(values.email, values.password);
+    const response = await userStore.registerUser(values.email, values.password);
 
-    router.push({ name: 'home' });
+    if (!response) return message.success('Welcome User!');
+
+    switch (response) {
+      case 'auth/user-not-found':
+        message.error('auth/user-not-found');
+        break;
+      case 'auth/wrong-password':
+        message.error('auth/wrong-password');
+        break;
+
+      default:
+        message.error("Firebase's Error, repeat again");
+        break;
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
