@@ -1,11 +1,34 @@
 <template>
-  <form @submit.prevent="handleSubmit">
-    <input type="text" placeholder="Enter your URL" v-model="url" />
-    <button type="submit">{{ buttonText }}</button>
-  </form>
+  <a-form name="addUrl" :model="formState" @finish="onFinish">
+    <a-form-item
+      name="url"
+      :rules="[
+        {
+          required: true,
+          min: 3,
+          whitespace: true,
+          pattern: regExpUrl,
+          message: 'Please, Enter a valid URL',
+        },
+      ]"
+    >
+      <a-input-password placeholder="Enter a new URL" v-model:value="formState.password" />
+    </a-form-item>
+
+    <a-form-item>
+      <a-button type="primary" html-type="submit">
+        {{ buttonText }}
+      </a-button>
+    </a-form-item>
+  </a-form>
 </template>
 
 <script setup>
+  import { reactive } from 'vue';
+
+  import { useFireStoreDB } from '../stores/firestoreDB';
+  import { regExpUrl } from '../utils/regExpUrl';
+
   const props = defineProps({
     buttonText: {
       type: String,
@@ -17,13 +40,16 @@
     },
   });
 
-  import { useFireStoreDB } from '../stores/firestoreDB';
-
   const fireStoreDB = useFireStoreDB();
 
-  const handleSubmit = () => {
+  const formState = reactive({
+    url: '',
+  });
+
+  const onFinish = async (value) => {
+    console.log(value, 'ok');
     // TODO validations url
-    fireStoreDB.addUrl(props.url);
+    // fireStoreDB.addUrl(props.url);
   };
 </script>
 

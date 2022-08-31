@@ -42,7 +42,14 @@
         </a-form-item>
 
         <a-form-item>
-          <a-button type="primary" html-type="submit">Create User</a-button>
+          <a-button
+            type="primary"
+            html-type="submit"
+            :disabled="userStore.loadingUser"
+            :loading="userStore.loadingUser"
+          >
+            Create User
+          </a-button>
         </a-form-item>
       </a-form>
     </a-col>
@@ -80,7 +87,11 @@
   const onFinish = async (values) => {
     const response = await userStore.registerUser(values.email, values.password);
 
-    if (!response) return message.success('Welcome User!');
+    if (!response) {
+      router.push({ name: 'home' });
+
+      return message.success('Welcome User!');
+    }
 
     switch (response) {
       case 'auth/user-not-found':
@@ -88,6 +99,9 @@
         break;
       case 'auth/wrong-password':
         message.error('auth/wrong-password');
+        break;
+      case 'auth/email-already-in-use':
+        message.error('auth/email-already-in-use');
         break;
 
       default:

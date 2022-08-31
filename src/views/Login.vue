@@ -39,7 +39,12 @@
         </a-form-item>
 
         <a-form-item>
-          <a-button type="primary" html-type="submit" :disabled="userStore.loadingUser">
+          <a-button
+            type="primary"
+            html-type="submit"
+            :disabled="userStore.loadingUser"
+            :loading="userStore.loadingUser"
+          >
             Login
           </a-button>
         </a-form-item>

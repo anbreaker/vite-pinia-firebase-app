@@ -2,8 +2,6 @@
   <h1>Home</h1>
   <h3>{{ userStore.userData?.email }}</h3>
 
-  <a-button type="primary">Test</a-button>
-
   <AddUrl :buttonText="'Add'" />
 
   <h4 v-if="fireStoreDB.loadingDocs">Loading docs...</h4>
