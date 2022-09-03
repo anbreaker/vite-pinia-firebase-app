@@ -12,7 +12,7 @@
         },
       ]"
     >
-      <a-input-password placeholder="Enter a new URL" v-model:value="formState.password" />
+      <a-input placeholder="Enter a new URL" v-model:value="formState.url" />
     </a-form-item>
 
     <a-form-item>
@@ -47,9 +47,10 @@
   });
 
   const onFinish = async (value) => {
-    console.log(value, 'ok');
+    // console.log(value);
+
     // TODO validations url
-    // fireStoreDB.addUrl(props.url);
+    fireStoreDB.addUrl(formState.url);
   };
 </script>
 
