@@ -19,6 +19,7 @@ export const useFireStoreDB = defineStore('fireStoreDB', {
   state: () => ({
     documents: [],
     loadingDocs: false,
+    loading: false,
   }),
 
   actions: {
@@ -48,6 +49,8 @@ export const useFireStoreDB = defineStore('fireStoreDB', {
 
     async addUrl(name) {
       try {
+        this.loading = true;
+
         const objDoc = {
           name,
           short: nanoid(6),
@@ -61,9 +64,12 @@ export const useFireStoreDB = defineStore('fireStoreDB', {
           id: docRef.id,
         });
       } catch (error) {
-        console.log(error);
+        console.log(error.code);
+
+        return error.code;
       } finally {
         this.loadingDocs = false;
+        this.loading = false;
       }
     },
 
@@ -107,6 +113,8 @@ export const useFireStoreDB = defineStore('fireStoreDB', {
 
     async deleteUrl(id) {
       try {
+        this.loading = true;
+
         const docRef = doc(db, 'urls', id);
 
         const docSnap = await getDoc(docRef);
@@ -118,8 +126,11 @@ export const useFireStoreDB = defineStore('fireStoreDB', {
         this.documents = this.documents.filter((doc) => doc.id !== id);
       } catch (error) {
         console.log(error.message);
+
+        return error.message;
       } finally {
         this.loadingDocs = false;
+        this.loading = false;
       }
     },
 

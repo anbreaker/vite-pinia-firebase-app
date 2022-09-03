@@ -16,7 +16,12 @@
     </a-form-item>
 
     <a-form-item>
-      <a-button type="primary" html-type="submit">
+      <a-button
+        type="primary"
+        html-type="submit"
+        :disabled="fireStoreDB.loading"
+        :loading="fireStoreDB.loading"
+      >
         {{ buttonText }}
       </a-button>
     </a-form-item>
@@ -25,6 +30,7 @@
 
 <script setup>
   import { reactive } from 'vue';
+  import { message } from 'ant-design-vue';
 
   import { useFireStoreDB } from '../stores/firestoreDB';
   import { regExpUrl } from '../utils/regExpUrl';
@@ -50,7 +56,18 @@
     // console.log(value);
 
     // TODO validations url
-    fireStoreDB.addUrl(formState.url);
+    const error = await fireStoreDB.addUrl(formState.url);
+
+    if (!error) {
+      formState.url = '';
+      return message.success('Url added successfully.');
+    }
+
+    switch (error) {
+      default:
+        return message.error('Error while adding url.');
+        break;
+    }
   };
 </script>
 

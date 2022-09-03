@@ -6,5 +6,9 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 
 - [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
 
+## Curso Vue.js bluuweb
+
+- [Vue.js bluuweb](https://bluuweb.github.io/vue-udemy/)
+
 ## UI with antdv
 - [antdv](https://www.antdv.com/)
