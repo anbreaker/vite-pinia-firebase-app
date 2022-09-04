@@ -35,30 +35,6 @@
       <h3>Url Extensa: {{ item.name }}</h3>
     </a-card>
   </template>
-
-  <!-- <ul v-if="!fireStoreDB.loadingDocs">
-    <li v-for="item of fireStoreDB.documents" :key="item.id">
-      name: {{ item.name }} - id: {{ item.id }} - url: {{ item.url }}
-
-      <a-button
-        type="primary"
-        :disabled="fireStoreDB.loading"
-        :loading="fireStoreDB.loading"
-        @click="fireStoreDB.deleteUrl(item.id)"
-      >
-        Delete
-      </a-button>
-
-      <a-button
-        type="primary"
-        :disabled="fireStoreDB.loading"
-        :loading="fireStoreDB.loading"
-        @click="router.push({ name: 'edit', params: { id: item.id } })"
-      >
-        Edit
-      </a-button>
-    </li>
-  </ul> -->
 </template>
 
 <script setup>

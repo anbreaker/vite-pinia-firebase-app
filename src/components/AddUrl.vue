@@ -29,11 +29,12 @@
 </template>
 
 <script setup>
-  import { reactive } from 'vue';
+  import { onMounted, reactive } from 'vue';
   import { message } from 'ant-design-vue';
 
   import { useFireStoreDB } from '../stores/firestoreDB';
   import { regExpUrl } from '../utils/regExpUrl';
+  import { useRoute } from 'vue-router';
 
   const props = defineProps({
     buttonText: {
@@ -48,26 +49,41 @@
 
   const fireStoreDB = useFireStoreDB();
 
+  const route = useRoute();
+
   const formState = reactive({
     url: '',
   });
 
+  onMounted(async () => {
+    formState.url = await fireStoreDB.readUrl(route.params.id);
+  });
+
+  const editBySubmit = () => {
+    // TODO validations url
+    fireStoreDB.editUrl(route.params.id, formState.url);
+  };
+
   const onFinish = async (value) => {
     // console.log(value);
 
-    // TODO validations url
-    const error = await fireStoreDB.addUrl(formState.url);
+    if (!route.path.includes('/edit')) {
+      // TODO validations url
+      const error = await fireStoreDB.addUrl(formState.url);
 
-    if (!error) {
-      formState.url = '';
-      return message.success('Url added successfully.');
+      if (!error) {
+        formState.url = '';
+        return message.success('Url added successfully.');
+      }
+
+      switch (error) {
+        default:
+          return message.error('Error while adding url.');
+          break;
+      }
     }
 
-    switch (error) {
-      default:
-        return message.error('Error while adding url.');
-        break;
-    }
+    if (route.path.includes('/edit')) editBySubmit();
   };
 </script>
 

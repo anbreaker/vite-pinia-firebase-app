@@ -32,11 +32,10 @@ export const useFireStoreDB = defineStore('fireStoreDB', {
         const q = query(collection(db, 'urls'), where('user', '==', auth.currentUser.uid));
 
         const querySnapshot = await getDocs(q);
-        // console.log(querySnapshot);
 
         querySnapshot.forEach((doc) => {
           this.documents.push({
-            ...doc.data,
+            ...doc.data(),
             id: doc.id,
           });
         });

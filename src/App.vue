@@ -2,7 +2,7 @@
   <Navbar />
 
   <a-layout-content style="padding: 0 50px">
-    <div :style="{ background: 'aliceblue', padding: '24px', minHeight: '17.5rem' }">
+    <div class="container">
       <router-view />
     </div>
   </a-layout-content>
@@ -12,4 +12,10 @@
   import Navbar from './components/Navbar.vue';
 </script>
 
-<style scoped></style>
+<style scoped>
+  .container {
+    background: aliceblue;
+    padding: 1.5rem;
+    min-height: calc(100vh - 64px);
+  }
+</style>

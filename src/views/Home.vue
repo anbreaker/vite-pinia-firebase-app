@@ -1,6 +1,6 @@
 <template>
   <h1>Home</h1>
-  <h3>{{ userStore.userData?.email }}</h3>
+  <h3>Hello user 👋: {{ userStore.userData?.email }}</h3>
 
   <AddUrl :buttonText="'Add Url'" />
 
