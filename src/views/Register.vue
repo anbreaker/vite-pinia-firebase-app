@@ -67,9 +67,9 @@
   const router = useRouter();
 
   const formState = reactive({
-    email: 'test@test.com',
-    password: 'testtest',
-    password2: 'testtest',
+    email: '',
+    password: '',
+    password2: '',
   });
 
   const validatePass = async (_rule, value) => {

@@ -62,8 +62,8 @@
   const userStore = useUserStore();
 
   const formState = reactive({
-    email: 'test@test.com',
-    password: 'testtest',
+    email: '',
+    password: '',
   });
 
   const onFinish = async () => {
