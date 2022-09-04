@@ -1,5 +1,5 @@
 <template>
-  <a-form name="addUrl" :model="formState" @finish="onFinish">
+  <a-form name="AddOrEditUrl" :model="formState" @finish="onFinish">
     <a-form-item
       name="url"
       :rules="[
@@ -69,7 +69,7 @@
 
     if (!route.path.includes('/edit')) {
       // TODO validations url
-      const error = await fireStoreDB.addUrl(formState.url);
+      const error = await fireStoreDB.AddOrEditUrl(formState.url);
 
       if (!error) {
         formState.url = '';

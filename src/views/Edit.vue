@@ -1,12 +1,12 @@
 <template>
   <div>
     <h1>Edit</h1>
-    <AddUrl :buttonText="'Edit Url'" />
+    <AddOrEditUrl :buttonText="'Edit Url'" />
   </div>
 </template>
 
 <script setup>
-  import AddUrl from '../components/AddUrl.vue';
+  import AddOrEditUrl from '../components/AddOrEditUrl.vue';
 </script>
 
 <style lang="scss" scoped></style>

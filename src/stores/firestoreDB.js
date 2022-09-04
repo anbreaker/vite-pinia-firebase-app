@@ -46,7 +46,7 @@ export const useFireStoreDB = defineStore('fireStoreDB', {
       }
     },
 
-    async addUrl(name) {
+    async AddOrEditUrl(name) {
       try {
         this.loading = true;
 

@@ -2,7 +2,7 @@
   <h1>Home</h1>
   <h3>Hello user 👋: {{ userStore.userData?.email }}</h3>
 
-  <AddUrl :buttonText="'Add Url'" />
+  <AddOrEditUrl :buttonText="'Add Url'" />
 
   <PresentationData />
 </template>
@@ -10,7 +10,7 @@
 <script setup>
   import { useUserStore } from '../stores/user.js';
 
-  import AddUrl from '../components/AddUrl.vue';
+  import AddOrEditUrl from '../components/AddOrEditUrl.vue';
   import PresentationData from '../components/PresentationData.vue';
 
   const userStore = useUserStore();
