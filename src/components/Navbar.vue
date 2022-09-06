@@ -16,6 +16,9 @@
         <a-menu-item v-if="!userStore.userData" key="register">
           <router-link to="/register">Register</router-link>
         </a-menu-item>
+        <a-menu-item v-if="userStore.userData" key="profile">
+          <router-link to="/profile">Profile</router-link>
+        </a-menu-item>
         <a-menu-item @click="userStore.logoutUser" v-if="userStore.userData" key="logout">
           Logout
         </a-menu-item>

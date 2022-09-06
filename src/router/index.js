@@ -4,23 +4,37 @@ import { isAuthenticatedGuard } from './authGuard';
 
 const routes = [
   {
-    name: 'home',
     beforeEnter: [isAuthenticatedGuard],
-    path: '/',
     component: () => import('../views/Home.vue'),
+    name: 'home',
+    path: '/',
   },
   {
-    name: 'edit',
     beforeEnter: [isAuthenticatedGuard],
-    path: '/edit/:id',
     component: () => import('../views/Edit.vue'),
+    name: 'edit',
+    path: '/edit/:id',
   },
-  { name: 'login', path: '/login', component: () => import('../views/Login.vue') },
-  { name: 'register', path: '/register', component: () => import('../views/Register.vue') },
   {
+    component: () => import('../views/Login.vue'),
+    path: '/login',
+    name: 'login',
+  },
+  {
+    component: () => import('../views/Register.vue'),
+    path: '/register',
+    name: 'register',
+  },
+  {
+    beforeEnter: [isAuthenticatedGuard],
+    component: () => import('../views/Profile.vue'),
+    name: 'profile',
+    path: '/profile',
+  },
+  {
+    component: () => import('../views/Login.vue'),
     name: 'login',
     path: '/:pathMatch(.*)*',
-    component: () => import('../views/Login.vue'),
   },
 ];
 
