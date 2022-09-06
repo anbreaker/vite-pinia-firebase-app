@@ -4,10 +4,11 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore/lite';
 import { defineStore } from 'pinia';
 
 import router from '../router';
-import { auth } from '../../firebaseConfig';
+import { auth, db } from '../../firebaseConfig';
 import { useFireStoreDB } from './firestoreDB';
 
 export const useUserStore = defineStore('userStore', {
@@ -59,6 +60,23 @@ export const useUserStore = defineStore('userStore', {
       }
     },
 
+    async setUser(user) {
+      try {
+        const docRef = doc(db, 'users', user.uid);
+
+        this.userData = {
+          email: user.email,
+          uid: user.uid,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+        };
+
+        await setDoc(docRef, this.userData);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     async logoutUser() {
       const fireStoreDB = useFireStoreDB();
 
@@ -79,15 +97,12 @@ export const useUserStore = defineStore('userStore', {
 
     currentUser() {
       return new Promise((resolve, reject) => {
-        // onAuthStateChanged retunr unsubscribe
+        // onAuthStateChanged return unsubscribe
         const unsubscribe = onAuthStateChanged(
           auth,
-          (user) => {
+          async (user) => {
             if (user) {
-              this.userData = {
-                email: user.email,
-                uid: user.uid,
-              };
+              await this.setUser(user);
             } else {
               this.userData = null;
 
