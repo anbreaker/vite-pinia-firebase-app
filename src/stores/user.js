@@ -3,6 +3,7 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
+  updateProfile,
 } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore/lite';
 import { defineStore } from 'pinia';
@@ -45,10 +46,7 @@ export const useUserStore = defineStore('userStore', {
       try {
         const { user } = await signInWithEmailAndPassword(auth, email, password);
 
-        this.userData = {
-          email: user.email,
-          uid: user.uid,
-        };
+        await this.setUser(user);
 
         router.push({ name: 'home' });
       } catch (error) {
@@ -60,6 +58,7 @@ export const useUserStore = defineStore('userStore', {
       }
     },
 
+    // TODO video 140, min 6.45
     async setUser(user) {
       try {
         const docRef = doc(db, 'users', user.uid);
@@ -81,13 +80,9 @@ export const useUserStore = defineStore('userStore', {
       const fireStoreDB = useFireStoreDB();
 
       try {
-        await signOut(auth);
-
-        this.userData = null;
-
-        fireStoreDB.$reset();
-
         router.push({ name: 'login' });
+
+        await signOut(auth);
       } catch (error) {
         console.error(error.code);
 
@@ -97,6 +92,7 @@ export const useUserStore = defineStore('userStore', {
 
     currentUser() {
       return new Promise((resolve, reject) => {
+        const fireStoreDB = useFireStoreDB();
         // onAuthStateChanged return unsubscribe
         const unsubscribe = onAuthStateChanged(
           auth,
@@ -106,7 +102,6 @@ export const useUserStore = defineStore('userStore', {
             } else {
               this.userData = null;
 
-              const fireStoreDB = useFireStoreDB();
               fireStoreDB.$reset();
             }
 
@@ -117,6 +112,20 @@ export const useUserStore = defineStore('userStore', {
 
         unsubscribe();
       });
+    },
+
+    async updateUser(displayName) {
+      try {
+        const user = auth.currentUser;
+
+        await updateProfile(user, { displayName });
+
+        this.setUser(user);
+      } catch (error) {
+        console.log(error);
+
+        return error.code;
+      }
     },
   },
 

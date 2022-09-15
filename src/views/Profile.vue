@@ -32,7 +32,7 @@
             },
           ]"
         >
-          <a-input type="email" v-model:value="userStore.userData.displayName" />
+          <a-input type="text" v-model:value="userStore.userData.displayName" />
         </a-form-item>
 
         <a-form-item>
@@ -51,12 +51,18 @@
 </template>
 
 <script setup>
+  import { message } from 'ant-design-vue';
+
   import { useUserStore } from '../stores/user';
 
   const userStore = useUserStore();
 
-  const onFinish = () => {
-    console.log('finish');
+  const onFinish = async () => {
+    const response = await userStore.updateUser(userStore.userData.displayName);
+
+    if (!response) return message.success('User is updated successfully!');
+
+    message.error('Error while updating user' + response);
   };
 </script>
 
