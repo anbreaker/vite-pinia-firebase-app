@@ -76,7 +76,51 @@
     return false; // To Stop upload for server (antdv management)
   };
 
+  const handleRemove = (file) => {
+    const index = fileList.value.indexOf(file);
+
+    const newFileList = fileList.value.slice();
+
+    newFileList.splice(index, 1);
+
+    fileList.value = newFileList;
+
+    // fileList.value = [];
+  };
+
   const handleChange = (info) => {
+    validateTypesPicture(info);
+  };
+
+  const validateTypesPicture = (info) => {
+    const { file } = info;
+
+    if (info.file.status !== 'uploading') {
+      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+
+      if (!isJpgOrPng) {
+        message.error('You can only upload JPG file!');
+
+        handleRemove(file);
+
+        return;
+      }
+
+      const imageSize = file.size / 1024 / 1024 < 2;
+
+      if (!imageSize) {
+        message.error('Image must smaller than 2MB!');
+
+        handleRemove(file);
+
+        return;
+      }
+    }
+
+    uploadOnlyOnePicture(info);
+  };
+
+  const uploadOnlyOnePicture = (info) => {
     let resFileList = [...info.fileList];
 
     resFileList = resFileList.slice(-1);
@@ -96,6 +140,7 @@
     const response = await userStore.updateUser(userStore.userData.displayName);
 
     fileList.value.forEach((file) => {
+      // TODO send file to firebase
       console.log(file);
     });
 
