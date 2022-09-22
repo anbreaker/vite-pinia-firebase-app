@@ -35,7 +35,17 @@
           <a-input type="text" v-model:value="userStore.userData.displayName" />
         </a-form-item>
 
-        <a-form-item>
+        <a-upload
+          list-type="picture"
+          :before-upload="beforeUpload"
+          :file-list="fileList"
+          :max-count="1"
+          @change="handleChange"
+        >
+          <a-button>Upload image</a-button>
+        </a-upload>
+
+        <a-form-item style="margin-top: 1rem">
           <a-button
             type="primary"
             html-type="submit"
@@ -51,14 +61,43 @@
 </template>
 
 <script setup>
+  import { ref } from 'vue';
   import { message } from 'ant-design-vue';
 
   import { useUserStore } from '../stores/user';
 
   const userStore = useUserStore();
 
+  const fileList = ref([]);
+
+  const beforeUpload = (file) => {
+    fileList.value = [...fileList.value, file];
+
+    return false; // To Stop upload for server (antdv management)
+  };
+
+  const handleChange = (info) => {
+    let resFileList = [...info.fileList];
+
+    resFileList = resFileList.slice(-1);
+
+    resFileList = resFileList.map((file) => {
+      if (file.response) {
+        file.url = file.response.url;
+      }
+
+      return file;
+    });
+
+    fileList.value = resFileList;
+  };
+
   const onFinish = async () => {
     const response = await userStore.updateUser(userStore.userData.displayName);
+
+    fileList.value.forEach((file) => {
+      console.log(file);
+    });
 
     if (!response) return message.success('User is updated successfully!');
 
