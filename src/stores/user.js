@@ -7,9 +7,10 @@ import {
 } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore/lite';
 import { defineStore } from 'pinia';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 import router from '../router';
-import { auth, db } from '../../firebaseConfig';
+import { auth, db, storage } from '../../firebaseConfig';
 import { useFireStoreDB } from './firestoreDB';
 
 export const useUserStore = defineStore('userStore', {
@@ -121,6 +122,25 @@ export const useUserStore = defineStore('userStore', {
         await updateProfile(user, { displayName });
 
         this.setUser(user);
+      } catch (error) {
+        console.log(error);
+
+        return error.code;
+      }
+    },
+
+    async updateImage(image) {
+      try {
+        const storageRef = ref(
+          storage,
+          `${auth.currentUser.displayName}-${auth.currentUser.uid}/profile`
+        );
+
+        await uploadBytes(storageRef, image.originFileObj);
+
+        const photoURL = await getDownloadURL(storageRef);
+
+        await updateProfile(auth.currentUser, { photoURL });
       } catch (error) {
         console.log(error);
 

@@ -139,10 +139,11 @@
   const onFinish = async () => {
     const response = await userStore.updateUser(userStore.userData.displayName);
 
-    fileList.value.forEach((file) => {
-      // TODO send file to firebase
-      console.log(file);
-    });
+    if (fileList.value[0]) {
+      const error = await userStore.updateImage(fileList.value[0]);
+
+      if (error) return message.success('Problem updating image: ' + error.message);
+    }
 
     if (!response) return message.success('User is updated successfully!');
 
