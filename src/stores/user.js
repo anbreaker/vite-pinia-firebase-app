@@ -133,7 +133,7 @@ export const useUserStore = defineStore('userStore', {
       try {
         const storageRef = ref(
           storage,
-          `${auth.currentUser.displayName}-${auth.currentUser.uid}/profile`
+          `profiles/${auth.currentUser.uid}/user-${auth.currentUser.displayName}`
         );
 
         await uploadBytes(storageRef, image.originFileObj);
@@ -141,6 +141,8 @@ export const useUserStore = defineStore('userStore', {
         const photoURL = await getDownloadURL(storageRef);
 
         await updateProfile(auth.currentUser, { photoURL });
+
+        this.setUser(auth.currentUser);
       } catch (error) {
         console.log(error);
 

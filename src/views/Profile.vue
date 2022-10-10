@@ -1,6 +1,10 @@
 <template>
   <h1>User's profile</h1>
 
+  <!-- <p>{{ userStore.userData }}</p> -->
+
+  <a-avatar class="center-img" :src="userStore.userData.photoURL" :size="150"></a-avatar>
+
   <a-row>
     <a-col :xs="{ span: 24 }" :sm="{ span: 18, offset: 3 }" :lg="{ span: 12, offset: 6 }">
       <h1>Login</h1>
@@ -151,4 +155,9 @@
   };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="css" scoped>
+  .center-img {
+    display: block;
+    margin: 0 auto;
+  }
+</style>

@@ -74,7 +74,11 @@ export const useFireStoreDB = defineStore('fireStoreDB', {
 
     async readUrl(id) {
       try {
+        console.log(id);
+
         const docRef = doc(db, 'urls', id);
+
+        console.log({ docRef });
 
         const docSnap = await getDoc(docRef);
 
