@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import { isAuthenticatedGuard } from './authGuard';
+import { isAuthenticatedGuard, redirectToShort } from './authGuard';
 
 const routes = [
   {
@@ -32,10 +32,17 @@ const routes = [
     path: '/profile',
   },
   {
-    component: () => import('../views/Login.vue'),
-    name: 'login',
+    beforeEnter: [redirectToShort],
+    component: () => import('../views/NotFound.vue'),
     path: '/:pathMatch(.*)*',
+    name: 'not-found',
   },
+
+  // {
+  //   component: () => import('../views/Login.vue'),
+  //   name: 'login',
+  //   path: '/:pathMatch(.*)*',
+  // },
 ];
 
 const router = createRouter({

@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
 import {
-  addDoc,
   collection,
   deleteDoc,
   doc,
   getDoc,
   getDocs,
   query,
+  setDoc,
   updateDoc,
   where,
 } from 'firebase/firestore/lite';
@@ -56,11 +56,11 @@ export const useFireStoreDB = defineStore('fireStoreDB', {
           user: auth.currentUser.uid,
         };
 
-        const docRef = await addDoc(collection(db, 'urls'), objDoc);
+        await setDoc(doc(db, 'urls', objDoc.short), objDoc);
 
         this.documents.push({
           ...objDoc,
-          id: docRef.id,
+          id: objDoc.short,
         });
       } catch (error) {
         console.log(error.code);
@@ -74,8 +74,6 @@ export const useFireStoreDB = defineStore('fireStoreDB', {
 
     async readUrl(id) {
       try {
-        console.log(id);
-
         const docRef = doc(db, 'urls', id);
 
         console.log({ docRef });
@@ -89,6 +87,22 @@ export const useFireStoreDB = defineStore('fireStoreDB', {
         console.log(error.message);
       } finally {
         this.loadingDocs = false;
+      }
+    },
+
+    async getUrlShort(id) {
+      try {
+        const docRef = doc(db, 'urls', id);
+
+        const docSnap = await getDoc(docRef);
+
+        if (!docSnap) return false;
+
+        return docSnap.data().name;
+      } catch (error) {
+        console.log(error.message);
+
+        return false;
       }
     },
 

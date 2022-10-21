@@ -10,6 +10,8 @@
       :key="item.id"
     >
       <template #extra>
+        <a-button type="dashed" @click="copyUrl(item.id)">Copy Url</a-button>
+
         <a-popconfirm
           title="Are you sure delete this task?"
           ok-text="Yes, delete"
@@ -61,6 +63,20 @@
     console.log(event);
 
     message.error('No deleteUrl');
+  };
+
+  const copyUrl = async (id) => {
+    const path = `${window.location.origin}/${id}`;
+
+    try {
+      await navigator.clipboard.writeText(path);
+
+      // TODO 11.41
+      // router.push(id);
+      console.log('Text copy to clipboard -->', path);
+    } catch (error) {
+      console.log('Something went wrong with clipboard', err);
+    }
   };
 </script>
 
