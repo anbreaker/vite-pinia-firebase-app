@@ -1,6 +1,6 @@
 <template>
   <a-layout>
-    <a-layout-header v-if="!userStore.loadingSession">
+    <a-layout-header>
       <a-menu
         mode="horizontal"
         theme="dark"
